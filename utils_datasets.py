@@ -19,6 +19,8 @@ class DynamicWMNIST(torchvision.datasets.MNIST):
         self.max_digits = max_digits
         self.dataset_size = dataset_size
         self.transform = transform
+        self.values = list(range(min_digits, max_digits+1))
+        self.weights = [0.2, 0.3, 0.5]
 
         self.label_to_indices = {
             i: torch.where(self.targets == i)[0] for i in range(10)
@@ -28,7 +30,7 @@ class DynamicWMNIST(torchvision.datasets.MNIST):
         return self.dataset_size
     
     def __getitem__(self, idx):
-        n_digits = random.randint(self.min_digits,self.max_digits)
+        n_digits = random.choices(self.values, weights=self.weights, k=1)[0]
         number = random.randint(0 if n_digits == 1 else 10**(n_digits-1), 10**n_digits - 1)
         digits = list(str(number))
 
