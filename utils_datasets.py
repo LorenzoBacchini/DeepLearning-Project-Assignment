@@ -20,7 +20,7 @@ class DynamicWMNIST(torchvision.datasets.MNIST):
         self.dataset_size = dataset_size
         self.transform = transform
         self.values = list(range(min_digits, max_digits+1))
-        self.weights = [0.2, 0.3, 0.5]
+        self.weights = [0.1, 0.2, 0.7]
 
         self.label_to_indices = {
             i: torch.where(self.targets == i)[0] for i in range(10)
