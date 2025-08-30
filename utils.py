@@ -1,7 +1,9 @@
 from PIL import Image
 import matplotlib.pyplot as plt
-import utils_datasets
 import torch
+from torchvision import transforms
+
+to_pil = transforms.ToPILImage()
 
 def predict_img(img_path, net, transform):
     img = Image.open(img_path).convert("L")
