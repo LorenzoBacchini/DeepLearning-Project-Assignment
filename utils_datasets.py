@@ -1,7 +1,6 @@
 import torch
 import torchvision
 import random
-import torchvision.transforms as transforms
 import os
 from PIL import Image
 from torch.utils.data import Dataset
@@ -9,9 +8,7 @@ from torch.utils.data import Dataset
 mnist_mean = 0.1307
 mnist_std = 0.3081
 
-to_pil = transforms.ToPILImage()
-
-class DynamicWMNIST(torchvision.datasets.MNIST):
+class TrainDatasetW(torchvision.datasets.MNIST):
     def __init__(self, root="./data", train=True, min_digits=1, max_digits=3, dataset_size=500000, transform=None, download=True):
         super().__init__(root=root, train=train, transform=transform, download=download)
 
@@ -47,7 +44,7 @@ class DynamicWMNIST(torchvision.datasets.MNIST):
 
         return concat_img, number
     
-class DynamicDMNIST(torchvision.datasets.MNIST):
+class TrainDatasetC(torchvision.datasets.MNIST):
     def __init__(self, root="./data", train=True, min_digits=1, max_digits=3, dataset_size=150000, transform=None, download=True):
         super().__init__(root=root, train=train, transform=transform, download=download)
 
@@ -87,17 +84,17 @@ class DynamicDMNIST(torchvision.datasets.MNIST):
 
         return concat_img, number
 
-class testMNISTDataset(Dataset):
+class TestDataset(Dataset):
     def __init__(self, root, transform=None):
         self.transform = transform
         self.samples = []
         self.class_to_idx = {}
         
-        # leggo le cartelle e ordino numericamente
+        # reading and reordering folder numerically
         classes = sorted([d for d in os.listdir(root) if os.path.isdir(os.path.join(root, d))], key=int)
         self.class_to_idx = {cls_name: i for i, cls_name in enumerate(classes)}
         
-        # creo lista (path_file, label)
+        # creating the list of all the file paths
         for cls_name in classes:
             cls_idx = self.class_to_idx[cls_name]
             folder_path = os.path.join(root, cls_name)
