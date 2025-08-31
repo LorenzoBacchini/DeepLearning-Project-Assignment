@@ -5,6 +5,8 @@ from torchvision import transforms
 
 to_pil = transforms.ToPILImage()
 
+# Function that take in input the image path, a trained network, and a transform function
+# and uses the given net to predict the image class
 def predict_img(img_path, net, transform):
     img = Image.open(img_path).convert("L")
     plt.imshow(img)
